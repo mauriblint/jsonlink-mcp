@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.mauriblint/jsonlink-mcp",
+  "title": "JsonLink",
+  "description": "Web access for AI agents: URL to Markdown, link metadata, screenshots, links and images of any URL.",
+  "websiteUrl": "https://jsonlink.io/docs/mcp",
+  "repository": {
+    "url": "https://github.com/mauriblint/jsonlink-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "jsonlink-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "JSONLINK_API_KEY",
+          "description": "Your JsonLink API key (free at https://jsonlink.io/signup)",
+          "isRequired": true,
+          "isSecret": true,
+          "format": "string"
+        }
+      ]
+    }
+  ]
+}
