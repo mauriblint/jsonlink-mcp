@@ -1,0 +1,48 @@
+{
+  "name": "jsonlink-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for JsonLink: give AI agents web access \u2014 URL to Markdown, link metadata, screenshots, links and images from any URL.",
+  "type": "module",
+  "bin": {
+    "jsonlink-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "jsonlink",
+    "web-scraping",
+    "markdown",
+    "screenshot",
+    "metadata",
+    "ai-agents"
+  ],
+  "homepage": "https://jsonlink.io/docs/mcp",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mauriblint/jsonlink-mcp.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "typescript": "^5.9.3"
+  },
+  "mcpName": "io.github.mauriblint/jsonlink-mcp",
+  "author": "JsonLink (https://jsonlink.io)"
+}
