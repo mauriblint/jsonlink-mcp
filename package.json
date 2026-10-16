@@ -1,6 +1,6 @@
 {
   "name": "jsonlink-mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "MCP server for JsonLink: give AI agents web access \u2014 URL to Markdown, link metadata, screenshots, links and images from any URL.",
   "type": "module",
   "bin": {

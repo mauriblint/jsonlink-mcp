@@ -89,24 +89,64 @@ export function createServer(apiKey: string) {
       title: 'Take a screenshot',
       description:
         'Capture a screenshot of a web page and return the image, so you can see how the page looks. ' +
-        'Supports desktop, mobile and full-page captures. Cookie banners are hidden. 2 credits.',
+        'Desktop, phone or tablet; full page or a single element. Cookie banners, ads and chat widgets are hidden. 2 credits.',
       inputSchema: {
         url,
-        device: z.enum(['desktop', 'mobile']).optional().describe('desktop (1280×800, default) or mobile (390×844 at 2×).'),
-        full_page: z.boolean().optional().describe('Capture the whole scrollable page instead of the first screen.'),
+        device: z
+          .enum(['desktop', 'mobile', 'tablet'])
+          .optional()
+          .describe('desktop (1280×800, default), mobile (iPhone 15) or tablet (iPad).'),
+        full_page: z
+          .boolean()
+          .optional()
+          .describe('Capture the whole scrollable page instead of the first screen. Lazy-loaded content is loaded first.'),
+        selector: z
+          .string()
+          .max(300)
+          .optional()
+          .describe('CSS selector of one element to capture instead of the page, e.g. "#pricing" or "header".'),
+        dark_mode: z.boolean().optional().describe('Capture the dark theme (prefers-color-scheme: dark).'),
+        hide_selectors: z
+          .string()
+          .max(2000)
+          .optional()
+          .describe('Comma-separated CSS selectors to hide before capturing, e.g. ".promo-bar,#newsletter".'),
+        clean: z
+          .boolean()
+          .optional()
+          .describe('Hide ads, trackers and chat widgets (default true). Set false to capture the page exactly as served.'),
+        wait_for_selector: z
+          .string()
+          .max(300)
+          .optional()
+          .describe('Wait until this CSS selector appears before capturing, for single-page apps.'),
         delay: z.number().min(0).max(10).optional().describe('Seconds to wait after loading, for animations or late content.'),
       },
       annotations,
     },
-    async ({ url, device, full_page, delay }) => {
+    async ({ url, device, full_page, selector, dark_mode, hide_selectors, clean, wait_for_selector, delay }) => {
       try {
-        const mobile = device === 'mobile';
+        const on = (value: boolean | undefined) => (value ? 'true' : undefined);
+        const tidy = clean !== false;
+        const viewport =
+          device === 'mobile'
+            ? { viewport_device: 'iphone_15', image_width: 786 }
+            : device === 'tablet'
+              ? { viewport_device: 'ipad' }
+              : { viewport_width: 1280, viewport_height: 800 };
+
         const shot = await api.get('screenshot', {
           url,
-          viewport_width: mobile ? 390 : 1280,
-          viewport_height: mobile ? 844 : 800,
-          device_scale_factor: mobile ? 2 : 1,
-          full_page: full_page ? 'true' : undefined,
+          ...viewport,
+          full_page: on(full_page),
+          full_page_scroll: on(full_page),
+          selector: selector || undefined,
+          dark_mode: on(dark_mode),
+          hide_selectors: hide_selectors || undefined,
+          block_ads: on(tidy),
+          block_trackers: on(tidy),
+          block_chats: on(tidy),
+          wait_for_selector: wait_for_selector || undefined,
           format: 'jpg',
           quality: full_page ? 60 : 75,
           delay,

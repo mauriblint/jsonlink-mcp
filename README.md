@@ -12,7 +12,7 @@ Give your AI agent the web. The [JsonLink](https://jsonlink.io) MCP server lets 
 | --- | --- | --- |
 | `url_to_markdown` | Main content of a page as clean Markdown, for reading articles, docs and blog posts | 1 |
 | `extract_metadata` | Title, description, preview images, favicon and site name of a URL | 1 |
-| `screenshot` | Screenshot of a page (desktop, mobile or full page), returned as an image | 2 |
+| `screenshot` | Screenshot of a page (desktop, mobile, tablet, full page or one element), returned as an image. Ads, trackers, chat widgets and cookie banners hidden; optional dark mode | 2 |
 | `extract_links` | Every link on a page with anchor text, follow/nofollow and internal/external | 1 |
 | `extract_images` | Every image on a page with format, dimensions and file size | 1 |
 
@@ -86,6 +86,7 @@ Any client that runs stdio MCP servers works the same way: command `npx`, argume
 
 - "Read https://example.com/blog/post and summarize it in five bullet points."
 - "Take a mobile screenshot of my landing page and tell me what looks broken."
+- "Screenshot just the pricing section of stripe.com in dark mode."
 - "Get the title and description of these 10 links and make a table."
 - "List the external links on this page that are nofollow."
 

@@ -1,7 +1,7 @@
 // Minimal client for the public JsonLink API (https://jsonlink.io/docs).
 // Auth, credits and rate limits are all handled by the API itself.
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.2.0';
 
 const DEFAULT_BASE_URL = 'https://jsonlink.io';
 const TIMEOUT_MS = 120_000;
@@ -21,6 +21,15 @@ const explain = (status: number, error: string, data: Record<string, unknown>): 
   }
   if (error === 'UNABLE_TO_LOAD_PAGE' || error.startsWith('Unable to fetch content')) {
     return 'The page could not be loaded: the site may be down, not exist, or block automated access. No credits were used.';
+  }
+  if (error === 'DOMAIN_NOT_FOUND') {
+    return 'This domain does not exist (no DNS record). Check the URL for typos. No credits were used.';
+  }
+  if (error === 'SELECTOR_NOT_FOUND') {
+    return `${typeof data.message === 'string' ? data.message : 'The CSS selector did not match any element'}. Check the selector or capture the whole page. No credits were used.`;
+  }
+  if (error === 'We cannot read this link') {
+    return 'This site blocks automated access, so the page could not be read. No credits were used.';
   }
   if (error === 'REQUEST_TIMEOUT') return 'The site did not respond in time. No credits were used.';
   return `JsonLink error${status >= 400 ? ` (HTTP ${status})` : ''}: ${error}`;
